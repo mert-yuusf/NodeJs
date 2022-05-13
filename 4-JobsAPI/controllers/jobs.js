@@ -6,28 +6,30 @@ const { StatusCodes } = require('http-status-codes');
 
 const getAllUserJobs = async (req, res) => {
     const jobs = await Job.find({ createdBy: req.currentUser.userId }).sort('createdAt');
-    console.log(req.currentUser);
-    console.log(jobs);
     res.status(StatusCodes.OK).json({ name: req.currentUser.name, jobs: jobs })
 }
 
 const postOne = async (req, res) => {
     req.body.createdBy = req.currentUser.userId;
     const job = await Job.create({ ...req.body });
-    console.log(job);
-    res.status(StatusCodes.CREATED).json({ ...req.body });
+    res.status(StatusCodes.CREATED).json({ job });
 }
 
 const deleteOne = async (req, res) => {
-    res.send('delete one job');
+    const { id } = req.params;
+    res.send(id);
 }
 
 const putOne = async (req, res) => {
-    res.send('put one job');
+    const { id } = req.params;
+    const job = await Job.findOneAndUpdate({ _id: id }, req.body);
+    res.status(StatusCodes.OK).json(job);
 }
 
 const getOne = async (req, res) => {
-    res.send('get one job');
+    const { id } = req.params;
+    const job = await Job.findById(id);
+    res.status(StatusCodes.OK).json(job);
 }
 
 

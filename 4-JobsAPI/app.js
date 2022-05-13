@@ -3,7 +3,11 @@ const connectDb = require('./db/connect');
 require('dotenv').config();
 require('express-async-errors');
 
-
+// extra security packages
+const helmet = require()
+const cors = require()
+const xss = require()
+const ratelimit = require()
 const app = express();
 // app config
 const PORT = process.env.PORT || 3000;
@@ -17,17 +21,14 @@ const authorizerUser = require('./middleware/authorizer')
 // routers
 const authRouter = require('./routes/auth')
 const jobRouter = require('./routes/jobs')
-const profileRouter = require('./routes/profiles');
 
 // app.use
 app.use(express.json());
-// app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 // register routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authorizerUser, jobRouter);
-app.use('/api/v1/profiles', authorizerUser, profileRouter);
 
 
 const start = async () => {
